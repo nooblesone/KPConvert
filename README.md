@@ -1,4 +1,4 @@
-# KPConvert: A Simple Tool for Quickly Converting PSD Clipping Masks to KRA Locked Transparency
+# KPConvert: A Simple Tool for Quickly Converting PSD Clipping Masks to KRA Alpha Inheritance
 
 ## Demo Video
 https://www.bilibili.com/video/BV1FNSFB9ELK
@@ -13,7 +13,7 @@ https://www.bilibili.com/video/BV1FNSFB9ELK
 3. Drag `KPConvert.exe` into this directory and double-click to run
 ![Step 3](https://github.com/nooblesone/nooblesone-img/blob/main/image/zoomit.png?raw=true)
 
-You can now double-click the generated `filename_converted.kra` file to view it
-![Result](https://github.com/nooblesone/nooblesone-img/blob/main/image/20251129190829.png?raw=true)
+You can now double-click the generated `filename_converted.kra` file to view it.The tool adds the Alpha Inheritance and a layer group based on the original PSD content, and applies the same blend mode to the group as the original clipping mask.
+![Result](https://github.com/nooblesone/nooblesone-img/blob/main/image/20251130000724.png?raw=true)
 
 Illustration by: 墨帧Studio <https://space.bilibili.com/2137267072>
