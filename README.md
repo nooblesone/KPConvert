@@ -1,22 +1,19 @@
-# KPConvert: 一个简单的将 psd 剪切蒙版快速转换为 kra 锁定透明度的小工具
+# KPConvert: A Simple Tool for Quickly Converting PSD Clipping Masks to KRA Locked Transparency
 
-## 演示视频
+## Demo Video
 https://www.bilibili.com/video/BV1FNSFB9ELK
 
-## 如何使用
-1. 用 krita 打开需要转换的 psd 文件
-![alt text](https://github.com/nooblesone/nooblesone-img/blob/main/image/image.png?raw=true)
+## How to Use
+1. Open the PSD file you want to convert in Krita
+![Step 1](https://github.com/nooblesone/nooblesone-img/blob/main/image/image.png?raw=true)
 
-2. 另存为 kra 文件，保存在与 pds 文件同一目录
+2. Save as a KRA file in the same directory as the PSD file
+![Step 2](https://github.com/nooblesone/nooblesone-img/blob/main/image/image-1.png?raw=true)
 
-![alt text](https://github.com/nooblesone/nooblesone-img/blob/main/image/image-1.png?raw=true)
+3. Drag `KPConvert.exe` into this directory and double-click to run
+![Step 3](https://github.com/nooblesone/nooblesone-img/blob/main/image/zoomit.png?raw=true)
 
-3. 将 `KPConvert.exe` 拖入此目录，并双击运行
-   
-![alt text](https://github.com/nooblesone/nooblesone-img/blob/main/image/zoomit.png?raw=true)
+You can now double-click the generated `filename_converted.kra` file to view it
+![Result](https://github.com/nooblesone/nooblesone-img/blob/main/image/20251129190829.png?raw=true)
 
-现在就可以双击生成的 `filename_converted.kra` 文件查看了
-
-![alt text](https://github.com/nooblesone/nooblesone-img/blob/main/image/20251129190829.png?raw=true)
-
-插图作者: 墨帧Studio <a>https://space.bilibili.com/2137267072</a>
+Illustration by: 墨帧Studio <https://space.bilibili.com/2137267072>
