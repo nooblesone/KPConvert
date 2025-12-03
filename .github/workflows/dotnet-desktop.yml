@@ -37,9 +37,6 @@ jobs:
     - name: Build
       run: dotnet build KPConvert.slnx --configuration Release --no-restore
 
-    - name: Publish
-      run: dotnet publish KPConvert/KPConvert. csproj --configuration Release --runtime ${{ matrix.runtime }} --self-contained true -o ./publish/${{ matrix.runtime }}
-
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
