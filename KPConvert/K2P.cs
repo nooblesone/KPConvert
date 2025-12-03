@@ -32,13 +32,15 @@ internal class K2P
 
         string filename = Path.GetFileNameWithoutExtension(psdPath);
 
+        string outPsdFileName = $"./{filename}_converted.psd";
+
         using FileStream psfs = new(psdPath, FileMode.Open);
 
         using BinaryReader br = new(psfs);
 
         using KraOperator kraOperator = KraOperator.Open(kraPath, out XDocument kraDoc);
 
-        using FileStream psoutfs = new($"./{filename}_converted.psd", FileMode.CreateNew);
+        using FileStream psoutfs = new(outPsdFileName, FileMode.CreateNew);
         using BinaryWriter bw = new(psoutfs);
 
 
@@ -98,7 +100,7 @@ internal class K2P
         }
 
 
-
+        Console.WriteLine($"success! file: {outPsdFileName}");
 
     }
 
@@ -149,7 +151,6 @@ internal class K2P
                 Clipping = clipping,
                 Name = name,
             };
-            Console.WriteLine(layer.Name);
             layers.Add(layer);
             index += extraDataFieldLength;
         }

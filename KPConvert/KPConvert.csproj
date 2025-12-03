@@ -9,24 +9,28 @@
 
 		<InvariantGlobalization>true</InvariantGlobalization>
 	</PropertyGroup>
+
+
+	<PropertyGroup>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<!--<FileVersion>2.3.4.5</FileVersion>-->
+		<InformationalVersion>1.1</InformationalVersion>
+	</PropertyGroup>
+
+
 	<ItemGroup>
 		<PackageReference Include="PsdSharp" Version="1.2.0" />
+		<PackageReference Include="System.CommandLine" Version="2.0.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<RdXmlFile Include="rd.xml" />
 	</ItemGroup>
 	<ItemGroup>
-	  <None Update="test.kra">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="test.psd">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="致夜.kra">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="致夜.psd">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
+		<None Update="test.kra">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="test.psd">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 </Project>

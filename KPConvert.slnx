@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="KPConvert/KPConvert.csproj" />
+  <Project Path="TryParam/TryParam.csproj" Id="f72773f1-9990-4b8d-99e6-6f97a2e86c0e" />
   <Project Path="TryWritePsd/TryWritePsd.csproj" Id="b668104b-4d7c-413c-9793-f0e44a62a62b" />
 </Solution>

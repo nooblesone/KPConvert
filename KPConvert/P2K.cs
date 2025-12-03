@@ -53,7 +53,7 @@ public class P2K
         // 检查图层数量是否相同
         if (psdLayers.Count != kraLayers.Count)
         {
-            Console.WriteLine($"{psdPath} 与 {kraPath} 图层数不同，处理失败");
+            Console.Error.WriteLine($"{psdPath} 与 {kraPath} 图层数不同，处理失败");
             return;
         }
 
@@ -104,7 +104,7 @@ public class P2K
         // 删除临时文件夹
         Directory.Delete(tempPath, true);
 
-        Console.WriteLine($"转换成功，文件 {resultKraFile}");
+        Console.Out.WriteLine($"转换成功，文件 {resultKraFile}");
 
     }
 
