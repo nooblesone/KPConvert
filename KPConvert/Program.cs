@@ -20,7 +20,11 @@ Option<FileInfo> kraFileOption = new("--kra")
     Required = true,
 };
 
-RootCommand rootCommand = new("快速处理kra和psd剪切蒙版不兼容问题的小工具");
+var desc = """
+    快速处理kra和psd剪切蒙版不兼容问题的小工具
+    A small tool for quickly addressing compatibility issues between KRA and PSD clipping masks.
+    """;
+RootCommand rootCommand = new(desc);
 
 Command p2kCommand = new("p2k","psd to kra")
 {
