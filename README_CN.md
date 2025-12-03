@@ -1,8 +1,7 @@
 # KPConvert: 一个简单的处理 krita 继承透明度(alpha inheritance)与psd 剪切蒙版兼容性问题的小工具
 
 ## 演示视频
-已过时，请等待更新
-https://www.bilibili.com/video/BV1FNSFB9ELK
+https://www.bilibili.com/video/BV11j2xB8Exp
 
 # 效果展示
 ![alt text](https://raw.githubusercontent.com/nooblesone/nooblesone-img/main/image/20251203183519.png)

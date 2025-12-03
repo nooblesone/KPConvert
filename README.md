@@ -1,8 +1,7 @@
 # KPConvert: A small tool for handling compatibility issues between Krita's alpha inheritance and PSD clipping masks
 
 ## Demo Video
-Outdated, please wait for an update
-https://www.bilibili.com/video/BV1FNSFB9ELK
+https://www.bilibili.com/video/BV11j2xB8Exp
 
 # Showcase
 ![alt text](https://raw.githubusercontent.com/nooblesone/nooblesone-img/main/image/20251203183519.png)
