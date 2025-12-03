@@ -27,7 +27,7 @@ jobs:
 
     env:
       Solution_Name: KPConvert.slnx
-      Project_Path: KPConvert/KPConvert. csproj
+      Project_Path: KPConvert/KPConvert.csproj
 
     steps:
     - name: Checkout
