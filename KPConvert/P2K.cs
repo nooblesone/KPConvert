@@ -19,93 +19,108 @@ public class P2K
         // 扫描psd
         string filename = Path.GetFileNameWithoutExtension(psdPath);
         // 临时解压kra文件夹路径
-        string tempPath = @$"./{filename}_converted";
+        string tempPath = Path.Combine(Path.GetTempPath(), $"KPConvert-{Guid.NewGuid():N}");
+        string tempResultKraFile = $"{tempPath}.kra";
         // 解压后的 maindoc.xml 路径
-        string maindocPath = @$"{tempPath}/maindoc.xml";
+        string maindocPath = Path.Combine(tempPath, "maindoc.xml");
         // 生成的 kra 文件路径
-        string resultKraFile = @$"{tempPath}.kra";
+        string resultKraFile = Path.Combine(Environment.CurrentDirectory, $"{filename}_converted.kra");
         var psdFile = PsdFile.Open(fileStream);
 
-        // 解压 kra 文件
-        ZipFile.ExtractToDirectory(kraPath, tempPath);
-
-        // 读取 maindoc.xml
-        XDocument rootDoc = XDocument.Load(maindocPath);
-        // 筛掉 psd 中的图层组结束图层
-        var psdLayers = psdFile.Layers.Where(x => x.Name != "</Layer group>").Reverse().ToList();
-        // 获取 kra 文件的图层列表
-        var kraLayers = rootDoc.Descendants().Where(x => x.Name.LocalName == "layer").ToList();
-
-        // psd文件的编码不可控，暂不使用图层名检查
-        /**
-        for (int i = 0; i < psdLayers.Count; i++)
+        try
         {
-            //var b = Encoding.Latin1.GetBytes(psdLayers[i].Name);
-            //string psdName = Encoding.UTF8.GetString(b);
+            // 解压 kra 文件
+            ZipFile.ExtractToDirectory(kraPath, tempPath);
 
-            string psdName = psdLayers[i].Name;
-            var b = Encoding.UTF8.GetBytes(kraLayers[i].Attribute("name")!.Value);
-            string kraName = Encoding.Latin1.GetString(b);
-            //string kraName = kraLayers[i].Attribute("name")!.Value;
-            Console.WriteLine($"{psdName} {kraName} {psdName == kraName}");
-        }
-        */
-        // 检查图层数量是否相同
-        if (psdLayers.Count != kraLayers.Count)
-        {
-            Console.Error.WriteLine($"{psdPath} 与 {kraPath} 图层数不同，处理失败");
-            return;
-        }
+            // 读取 maindoc.xml
+            XDocument rootDoc = XDocument.Load(maindocPath);
+            // 筛掉 psd 中的图层组结束图层
+            var psdLayers = psdFile.Layers.Where(x => x.Name != "</Layer group>").Reverse().ToList();
+            // 获取 kra 文件的图层列表
+            var kraLayers = rootDoc.Descendants().Where(x => x.Name.LocalName == "layer" && x.Attribute("name")?.Value != "</Layer group>").ToList();
 
-        // 使用了剪切蒙版的图层列表
-        List<List<XElement>> cilpGroups = [];
-
-        List<XElement> cilpGroup = [];
-        // 找到使用剪切蒙版的图层组
-        bool flag = false;
-        for (int i = 0; i < psdLayers.Count; i++)
-        {
-            var psdLayer = psdLayers[i];
-            var kraLayer = kraLayers[i];
-
-            if (psdLayer.Clipping || flag)
+            // psd文件的编码不可控，暂不使用图层名检查
+            /**
+            for (int i = 0; i < psdLayers.Count; i++)
             {
-                flag = true;
-                // 为剪切蒙版图层添加锁定透明度
-                if (psdLayer.Clipping)
-                {
-                    kraLayer.SetAttributeValue("channelflags", "1110");
-                }
+                //var b = Encoding.Latin1.GetBytes(psdLayers[i].Name);
+                //string psdName = Encoding.UTF8.GetString(b);
 
-                cilpGroup.Add(kraLayer);
-                if (!psdLayer.Clipping)
+                string psdName = psdLayers[i].Name;
+                var b = Encoding.UTF8.GetBytes(kraLayers[i].Attribute("name")!.Value);
+                string kraName = Encoding.Latin1.GetString(b);
+                //string kraName = kraLayers[i].Attribute("name")!.Value;
+                Console.WriteLine($"{psdName} {kraName} {psdName == kraName}");
+            }
+            */
+            // 检查图层数量是否相同
+            if (psdLayers.Count != kraLayers.Count)
+            {
+                Console.Error.WriteLine($"{psdPath} 与 {kraPath} 图层数不同，处理失败");
+                return;
+            }
+
+            // 使用了剪切蒙版的图层列表
+            List<List<XElement>> cilpGroups = [];
+
+            List<XElement> cilpGroup = [];
+            // 找到使用剪切蒙版的图层组
+            bool flag = false;
+            for (int i = 0; i < psdLayers.Count; i++)
+            {
+                var psdLayer = psdLayers[i];
+                var kraLayer = kraLayers[i];
+
+                if (psdLayer.Clipping || flag)
                 {
-                    flag = false;
-                    cilpGroups.Add(cilpGroup);
-                    cilpGroup = [];
+                    flag = true;
+                    // 为剪切蒙版图层添加锁定透明度
+                    if (psdLayer.Clipping)
+                    {
+                        kraLayer.SetAttributeValue("channelflags", "1110");
+                    }
+
+                    cilpGroup.Add(kraLayer);
+                    if (!psdLayer.Clipping)
+                    {
+                        flag = false;
+                        cilpGroups.Add(cilpGroup);
+                        cilpGroup = [];
+                    }
                 }
             }
-        }
 
-        // 为筛出的图层套图层组
-        foreach (var item in cilpGroups)
-        {
-            XElement f = item.First();
-            f.AddBeforeSelf(GetKraGroup(item));
-            foreach (var item2 in item)
+            // 为筛出的图层套图层组
+            foreach (var item in cilpGroups)
             {
-                item2.Remove();
+                XElement f = item.First();
+                f.AddBeforeSelf(GetKraGroup(item));
+                foreach (var item2 in item)
+                {
+                    item2.Remove();
+                }
+            }
+            // 保存 maindoc.xml
+            File.SetAttributes(maindocPath, FileAttributes.Normal);
+            rootDoc.Save(maindocPath);
+            // 导出结果文件
+            ZipFile.CreateFromDirectory(tempPath, tempResultKraFile, CompressionLevel.Fastest, false);
+            File.Move(tempResultKraFile, resultKraFile, true);
+
+            Console.Out.WriteLine($"转换成功，文件 {resultKraFile}");
+        }
+        finally
+        {
+            if (Directory.Exists(tempPath))
+            {
+                // 删除临时文件夹
+                Directory.Delete(tempPath, true);
+            }
+            if (File.Exists(tempResultKraFile))
+            {
+                File.Delete(tempResultKraFile);
             }
         }
-        // 保存 maindoc.xml
-        rootDoc.Save(maindocPath);
-        // 导出结果文件
-        ZipFile.CreateFromDirectory(tempPath, resultKraFile, CompressionLevel.Fastest, false);
-        // 删除临时文件夹
-        Directory.Delete(tempPath, true);
-
-        Console.Out.WriteLine($"转换成功，文件 {resultKraFile}");
-
     }
 
     private static void CheckFile(string psdPath)
@@ -113,7 +128,6 @@ public class P2K
         if (!File.Exists(psdPath))
         {
             throw new Exception($"文件 {psdPath} 不存在");
-            throw new Exception($"Can't find {psdPath}");
         }
     }
 
